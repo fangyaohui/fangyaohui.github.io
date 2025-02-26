@@ -1,0 +1,197 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>37 MinIO | 孤岛</title><meta name="author" content="徐行"><meta name="copyright" content="徐行"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="37 MinIO参考资料 1.  简介MinIO 是一个基于Apache License v2.0开源协议的对象存储服务。它兼容亚马逊S3云存储服务接口，非常适合于存储大容量非结构化的数据，例如图片、视频、日志文件、备份数据和容器&#x2F;虚拟机镜像等，而一个对象文件可以是任意大小，从几kb到最大5T不等。 MinIO是一个非常轻量的服务,可以很简单的和其他应用的结合，类似 NodeJS, Re">
+<meta property="og:type" content="article">
+<meta property="og:title" content="37 MinIO">
+<meta property="og:url" content="http://example.com/2025/02/26/37%20MinIO/index.html">
+<meta property="og:site_name" content="孤岛">
+<meta property="og:description" content="37 MinIO参考资料 1.  简介MinIO 是一个基于Apache License v2.0开源协议的对象存储服务。它兼容亚马逊S3云存储服务接口，非常适合于存储大容量非结构化的数据，例如图片、视频、日志文件、备份数据和容器&#x2F;虚拟机镜像等，而一个对象文件可以是任意大小，从几kb到最大5T不等。 MinIO是一个非常轻量的服务,可以很简单的和其他应用的结合，类似 NodeJS, Re">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/15.png">
+<meta property="article:published_time" content="2025-02-26T10:58:17.000Z">
+<meta property="article:modified_time" content="2025-02-26T11:52:51.512Z">
+<meta property="article:author" content="徐行">
+<meta property="article:tag" content="MinIO">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/15.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "37 MinIO",
+  "url": "http://example.com/2025/02/26/37%20MinIO/",
+  "image": "http://example.com/img/15.png",
+  "datePublished": "2025-02-26T10:58:17.000Z",
+  "dateModified": "2025-02-26T11:52:51.512Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "徐行",
+      "url": "http://example.com/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2025/02/26/37%20MinIO/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '37 MinIO',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">66</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">44</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">19</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 生活</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/shuoshuo/"><i class="fa-fw fa fa-comments-o"></i><span> 分享</span></a></li><li><a class="site-page child" href="/photos/"><i class="fa-fw fa fa-camera-retro"></i><span> 相册</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fa fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 影视</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/15.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">孤岛</span></a><a class="nav-page-title" href="/"><span class="site-name">37 MinIO</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 生活</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/shuoshuo/"><i class="fa-fw fa fa-comments-o"></i><span> 分享</span></a></li><li><a class="site-page child" href="/photos/"><i class="fa-fw fa fa-camera-retro"></i><span> 相册</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fa fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 影视</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">37 MinIO</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-02-26T10:58:17.000Z" title="发表于 2025-02-26 18:58:17">2025-02-26</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-02-26T11:52:51.512Z" title="更新于 2025-02-26 19:52:51">2025-02-26</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">855</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>3分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="37-MinIO"><a href="#37-MinIO" class="headerlink" title="37 MinIO"></a>37 MinIO</h1><p>参考资料</p>
+<p>1. </p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>MinIO 是一个基于Apache License v2.0开源协议的对象存储服务。它兼容亚马逊S3云存储服务接口，非常适合于存储大容量非结构化的数据，<strong>例如图片、视频、日志文件、备份数据和容器&#x2F;虚拟机镜像等</strong>，而一个对象文件可以是任意大小，从几kb到最大5T不等。</p>
+<p>MinIO是一个非常轻量的服务,可以很简单的和其他应用的结合，类似 NodeJS, Redis 或者 MySQL。</p>
+<h3 id="纠删玛"><a href="#纠删玛" class="headerlink" title="纠删玛"></a>纠删玛</h3><p>Minio使用纠删码erasure code和校验和checksum来保护数据免受硬件故障和无声数据损坏。 即便您丢失一半数量（N&#x2F;2）的硬盘，您仍然可以恢复数据。</p>
+<p> <strong>纠删码是一种恢复丢失和损坏数据的数学算法</strong>， Minio采用Reed-Solomon code将对象拆分成N&#x2F;2数据和N&#x2F;2 奇偶校验块。 这就意味着如果是12块盘，一个对象会被分成6个数据块、6个奇偶校验块，你可以丢失任意6块盘（不管其是存放的数据块还是奇偶校验块），你仍可以从剩下的盘中的数据进行恢复 纠删码的工作原理和RAID或者复制不同，像RAID6可以在损失两块盘的情况下不丢数据，而Minio纠删码可以在丢失一半的盘的情况下，仍可以保证数据安全。 而且Minio纠删码是作用在对象级别，可以一次恢复一个对象，而RAID是作用在卷级别，数据恢复时间很长。 Minio对每个对象单独编码，存储服务一经部署，通常情况下是不需要更换硬盘或者修复。Minio纠删码的设计目标是为了性能和尽可能的使用硬件加速。</p>
+<h2 id="MinIO安装"><a href="#MinIO安装" class="headerlink" title="MinIO安装"></a>MinIO安装</h2><h3 id="Windows环境MinIO安装"><a href="#Windows环境MinIO安装" class="headerlink" title="Windows环境MinIO安装"></a>Windows环境MinIO安装</h3><h4 id="官网下载"><a href="#官网下载" class="headerlink" title="官网下载"></a>官网下载</h4><p>官网地址：<a target="_blank" rel="noopener" href="https://min.io/">MinIO | S3 &amp; Kubernetes Native Object Storage for AI</a></p>
+<h4 id="创建文件夹"><a href="#创建文件夹" class="headerlink" title="创建文件夹"></a>创建文件夹</h4><p>下载好不需要点击exe文件，创建好文件夹后，把下载好的文件移动到你创建好的目录下。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/fangyaohui/Pictures@main/img/202502261952601.png" alt="image-20240627152606796"></p>
+<h4 id="管理员命令行运行"><a href="#管理员命令行运行" class="headerlink" title="管理员命令行运行"></a>管理员命令行运行</h4><p>以管理员的身份打开CMD，CD到你刚刚创建的minio.exe文件所在的文件夹下。运行命令：</p>
+<p>这是在设置你MinIO的用户名和密码。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">setx MINIO_ROOT_USER admin</span><br><span class="line">setx MINIO_ROOT_PASSWORD admin1234</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/fangyaohui/Pictures@main/img/202502261952634.png" alt="image-20240627152627594"></p>
+<h4 id="创建MinIO存储文件目录"><a href="#创建MinIO存储文件目录" class="headerlink" title="创建MinIO存储文件目录"></a>创建MinIO存储文件目录</h4><p>在本地创建MinIO存储文件的目录，例如：d:\assets\OB-Storage；</p>
+<h4 id="MinIO启动"><a href="#MinIO启动" class="headerlink" title="MinIO启动"></a>MinIO启动</h4><p>继续在该CMD中运行命令启动MinIO：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">.\minio.exe server d:\assets\OB-Storage  --console-address &quot;:9001&quot; --address &quot;:9000&quot; </span><br><span class="line"></span><br><span class="line">.\minio.exe server D:\CodeFolder\ToolFolder\MinIO\data  --console-address &quot;:9001&quot; --address &quot;:9000&quot; </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/fangyaohui/Pictures@main/img/202502261952858.png" alt="image-20240627152800403"></p>
+<h4 id="MinIO使用"><a href="#MinIO使用" class="headerlink" title="MinIO使用"></a>MinIO使用</h4><p>控制台：<a target="_blank" rel="noopener" href="http://localhost:9001/">http://localhost:9001</a></p>
+<p>创建Bucket：【项目名】-[模块名]-buck</p>
+<p>创建AcessKey和secret</p>
+<h4 id="MinIO登录"><a href="#MinIO登录" class="headerlink" title="MinIO登录"></a>MinIO登录</h4><p>Minio的默认账号密码进行登录，对应的账号密码都是minioadmin</p>
+<p><img src="https://cdn.jsdelivr.net/gh/fangyaohui/Pictures@main/img/202502261952924.png" alt="image-20240627161303822"></p>
+<h2 id="SpringBoot集成MinIO"><a href="#SpringBoot集成MinIO" class="headerlink" title="SpringBoot集成MinIO"></a>SpringBoot集成MinIO</h2><h3 id="Nacos配置"><a href="#Nacos配置" class="headerlink" title="Nacos配置"></a>Nacos配置</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">baas:</span><br><span class="line">  client:</span><br><span class="line">    enabled: true</span><br><span class="line">  storage:</span><br><span class="line">    enabled: true</span><br><span class="line">    endpoint: http://192.168.0.120:9000</span><br><span class="line">    access-key: M2vezlAtUmtcNIqc58MD</span><br><span class="line">    secret-key: g0CzJtIpEpKZ8UoRKUBszQfcHSpQfXhvNF39Suiv</span><br><span class="line">    bucket-name: space-intell-gas-bff-buck</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">space:</span><br><span class="line">  board:</span><br><span class="line">    gov:</span><br><span class="line">      biz:</span><br><span class="line">        resourceUrlPrefix: http://192.168.0.120:9000</span><br><span class="line">        resourceBucket: space-intell-gas-bff-buck</span><br></pre></td></tr></table></figure>
+
+<p>上面的配置是实习项目中的配置。</p>
+<h3 id="依赖引入"><a href="#依赖引入" class="headerlink" title="依赖引入"></a>依赖引入</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- MinIO --&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;io.minio&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;minio&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;8.2.2&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;!-- Hutool --&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;cn.hutool&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;hutool-all&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;5.8.18&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/MinIO/">MinIO</a></div><div class="post-share"><div class="social-share" data-image="/img/15.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2025/02/26/34-04%20Milvus/" title="34-04 Milvus"><img class="cover" src="/img/14.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">34-04 Milvus</div></div><div class="info-2"><div class="info-item-1">34-04 Milvus参考资料 为AI而生的数据库：Milvus详解及实战  概述Python使用Demo12# 安装 Python 客户端pip install pymilvus  123456# 3. 初始化 Milvus 客户端from pymilvus import connections as milvus# 初始化一个 Milvus 客户端，默认连接到本地的 Milvus 服务client = milvus.connect(&#x27;default&#x27;, host=&#x27;localhost&#x27;, port=&#x27;19530&#x27;)  1234567# 4. 创建集合collection_name = &quot;face_collection&quot;# 创建集合，确保集合不存在if not client.has_collection(collection_name):    client.create_collection(collection_name)  123456789# 5. 定义向量字段的类型import...</div></div></div></a><a class="pagination-related" href="/2025/02/26/36%20Java%E6%B3%A8%E8%A7%A3%20&amp;%20%E5%88%87%E9%9D%A2%20&amp;%20%E5%8F%8D%E5%B0%84/" title="36 Java注解 &amp; 切面 &amp; 反射"><img class="cover" src="/img/6.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">36 Java注解 & 切面 & 反射</div></div><div class="info-2"><div class="info-item-1">36 Java注解 &amp; 切面 &amp; 反射自定义注解1.注解的概念 注解是一种元数据形式。即注解是属于Java的一种数据类型，和类、接口、数组、枚举类似。 注解用来修饰，类、方法、变量、参数、包。 注解不会对所修饰的代码产生直接的影响。  2.注解的使用范围 注解又许多用法，其中有：为编译器提供信息 - 注解能被编译器检测到错误或抑制警告。编译时和部署时的处理 - 软件工具能处理注解信息从而生成代码，XML文件等等。运行时的处理 - 有些注解在运行时能被检测到。...</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">徐行</div><div class="author-info-description">道阻且长</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">66</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">44</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">19</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/fangyaohui"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#37-MinIO"><span class="toc-number">1.</span> <span class="toc-text">37 MinIO</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-number">1.1.</span> <span class="toc-text">简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%A0%E5%88%A0%E7%8E%9B"><span class="toc-number">1.1.1.</span> <span class="toc-text">纠删玛</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MinIO%E5%AE%89%E8%A3%85"><span class="toc-number">1.2.</span> <span class="toc-text">MinIO安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Windows%E7%8E%AF%E5%A2%83MinIO%E5%AE%89%E8%A3%85"><span class="toc-number">1.2.1.</span> <span class="toc-text">Windows环境MinIO安装</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%98%E7%BD%91%E4%B8%8B%E8%BD%BD"><span class="toc-number">1.2.1.1.</span> <span class="toc-text">官网下载</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9"><span class="toc-number">1.2.1.2.</span> <span class="toc-text">创建文件夹</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AE%A1%E7%90%86%E5%91%98%E5%91%BD%E4%BB%A4%E8%A1%8C%E8%BF%90%E8%A1%8C"><span class="toc-number">1.2.1.3.</span> <span class="toc-text">管理员命令行运行</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E5%BB%BAMinIO%E5%AD%98%E5%82%A8%E6%96%87%E4%BB%B6%E7%9B%AE%E5%BD%95"><span class="toc-number">1.2.1.4.</span> <span class="toc-text">创建MinIO存储文件目录</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MinIO%E5%90%AF%E5%8A%A8"><span class="toc-number">1.2.1.5.</span> <span class="toc-text">MinIO启动</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MinIO%E4%BD%BF%E7%94%A8"><span class="toc-number">1.2.1.6.</span> <span class="toc-text">MinIO使用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MinIO%E7%99%BB%E5%BD%95"><span class="toc-number">1.2.1.7.</span> <span class="toc-text">MinIO登录</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SpringBoot%E9%9B%86%E6%88%90MinIO"><span class="toc-number">1.3.</span> <span class="toc-text">SpringBoot集成MinIO</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Nacos%E9%85%8D%E7%BD%AE"><span class="toc-number">1.3.1.</span> <span class="toc-text">Nacos配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BE%9D%E8%B5%96%E5%BC%95%E5%85%A5"><span class="toc-number">1.3.2.</span> <span class="toc-text">依赖引入</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2025/02/26/01-%E4%BD%BF%E7%94%A8docker-compose%E5%AE%89%E8%A3%85ElasticSearch%E5%92%8Ckibana/" title="01 使用docker-compose安装ElasticSearch和kibana"><img src="/img/3.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="01 使用docker-compose安装ElasticSearch和kibana"/></a><div class="content"><a class="title" href="/2025/02/26/01-%E4%BD%BF%E7%94%A8docker-compose%E5%AE%89%E8%A3%85ElasticSearch%E5%92%8Ckibana/" title="01 使用docker-compose安装ElasticSearch和kibana">01 使用docker-compose安装ElasticSearch和kibana</a><time datetime="2025-02-26T10:58:17.000Z" title="发表于 2025-02-26 18:58:17">2025-02-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/02/26/04%20Prometheus+Grafana%E7%9B%91%E6%8E%A7SpringBoot%E9%A1%B9%E7%9B%AEJVM%E4%BF%A1%E6%81%AF/" title="04 Prometheus+Grafana监控SpringBoot项目JVM信息"><img src="/img/14.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="04 Prometheus+Grafana监控SpringBoot项目JVM信息"/></a><div class="content"><a class="title" href="/2025/02/26/04%20Prometheus+Grafana%E7%9B%91%E6%8E%A7SpringBoot%E9%A1%B9%E7%9B%AEJVM%E4%BF%A1%E6%81%AF/" title="04 Prometheus+Grafana监控SpringBoot项目JVM信息">04 Prometheus+Grafana监控SpringBoot项目JVM信息</a><time datetime="2025-02-26T10:58:17.000Z" title="发表于 2025-02-26 18:58:17">2025-02-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/02/26/02%20Nexus/" title="02 Nexus"><img src="/img/1.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="02 Nexus"/></a><div class="content"><a class="title" href="/2025/02/26/02%20Nexus/" title="02 Nexus">02 Nexus</a><time datetime="2025-02-26T10:58:17.000Z" title="发表于 2025-02-26 18:58:17">2025-02-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/02/26/05%20%E5%9F%BA%E4%BA%8EPrometheus%E5%92%8CGrafana%E5%AF%B9%20CPU%E5%86%85%E5%AD%98%E4%BB%A5%E5%8F%8A%E5%8A%A0%E6%B2%B9%E7%AB%99%E5%BE%AE%E6%9C%8D%E5%8A%A1%E8%BF%9B%E8%A1%8CJVM%E7%9B%91%E6%8E%A7/" title="05 基于Prometheus和Grafana对 CPU内存以及加油站微服务进行JVM监控"><img src="/img/2.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="05 基于Prometheus和Grafana对 CPU内存以及加油站微服务进行JVM监控"/></a><div class="content"><a class="title" href="/2025/02/26/05%20%E5%9F%BA%E4%BA%8EPrometheus%E5%92%8CGrafana%E5%AF%B9%20CPU%E5%86%85%E5%AD%98%E4%BB%A5%E5%8F%8A%E5%8A%A0%E6%B2%B9%E7%AB%99%E5%BE%AE%E6%9C%8D%E5%8A%A1%E8%BF%9B%E8%A1%8CJVM%E7%9B%91%E6%8E%A7/" title="05 基于Prometheus和Grafana对 CPU内存以及加油站微服务进行JVM监控">05 基于Prometheus和Grafana对 CPU内存以及加油站微服务进行JVM监控</a><time datetime="2025-02-26T10:58:17.000Z" title="发表于 2025-02-26 18:58:17">2025-02-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/02/26/06%20%E5%B1%80%E5%9F%9F%E7%BD%91/" title="06 局域网"><img src="/img/4.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="06 局域网"/></a><div class="content"><a class="title" href="/2025/02/26/06%20%E5%B1%80%E5%9F%9F%E7%BD%91/" title="06 局域网">06 局域网</a><time datetime="2025-02-26T10:58:17.000Z" title="发表于 2025-02-26 18:58:17">2025-02-26</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/index_img.png);"><div id="footer-wrap"><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.3</a></div><div class="footer_custom_text">道阻且长</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = true;
+document.body.addEventListener('input', POWERMODE);
+</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

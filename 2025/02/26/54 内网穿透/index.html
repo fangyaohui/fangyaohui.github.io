@@ -1,0 +1,222 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>54 内网穿透 | 孤岛</title><meta name="author" content="徐行"><meta name="copyright" content="徐行"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="54 内网穿透参考资料 NAT(地址转换技术)详解 内网穿透详解 简单使用FRP实现本地mysql的内网穿透  前言阅读本文前需要先搞懂NAT、PAT、端口映射几个概念。 内网宽带中的主机可以访问公网宽带主机，反之不可以访问；公网宽带主机可以和公网宽带主机双向访问；内网宽带中的主机和内网宽带中的主机互相无法访问。那么内网宽带中的客户机和公网宽带中的客户机如何访问另一个内网宽带中的服务器呢？这里就需">
+<meta property="og:type" content="article">
+<meta property="og:title" content="54 内网穿透">
+<meta property="og:url" content="http://example.com/2025/02/26/54%20%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/index.html">
+<meta property="og:site_name" content="孤岛">
+<meta property="og:description" content="54 内网穿透参考资料 NAT(地址转换技术)详解 内网穿透详解 简单使用FRP实现本地mysql的内网穿透  前言阅读本文前需要先搞懂NAT、PAT、端口映射几个概念。 内网宽带中的主机可以访问公网宽带主机，反之不可以访问；公网宽带主机可以和公网宽带主机双向访问；内网宽带中的主机和内网宽带中的主机互相无法访问。那么内网宽带中的客户机和公网宽带中的客户机如何访问另一个内网宽带中的服务器呢？这里就需">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/19.png">
+<meta property="article:published_time" content="2025-02-26T10:58:17.000Z">
+<meta property="article:modified_time" content="2025-02-26T12:03:18.620Z">
+<meta property="article:author" content="徐行">
+<meta property="article:tag" content="other">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/19.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "54 内网穿透",
+  "url": "http://example.com/2025/02/26/54%20%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/",
+  "image": "http://example.com/img/19.png",
+  "datePublished": "2025-02-26T10:58:17.000Z",
+  "dateModified": "2025-02-26T12:03:18.620Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "徐行",
+      "url": "http://example.com/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2025/02/26/54%20%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '54 内网穿透',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">66</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">44</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">19</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 生活</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/shuoshuo/"><i class="fa-fw fa fa-comments-o"></i><span> 分享</span></a></li><li><a class="site-page child" href="/photos/"><i class="fa-fw fa fa-camera-retro"></i><span> 相册</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fa fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 影视</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/19.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">孤岛</span></a><a class="nav-page-title" href="/"><span class="site-name">54 内网穿透</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 生活</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/shuoshuo/"><i class="fa-fw fa fa-comments-o"></i><span> 分享</span></a></li><li><a class="site-page child" href="/photos/"><i class="fa-fw fa fa-camera-retro"></i><span> 相册</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fa fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 影视</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">54 内网穿透</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-02-26T10:58:17.000Z" title="发表于 2025-02-26 18:58:17">2025-02-26</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-02-26T12:03:18.620Z" title="更新于 2025-02-26 20:03:18">2025-02-26</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/other/">other</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">3.7k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>11分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="54-内网穿透"><a href="#54-内网穿透" class="headerlink" title="54 内网穿透"></a>54 内网穿透</h1><h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/gui951753/article/details/79593307">NAT(地址转换技术)详解</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/cyrus0w/p/13123504.html">内网穿透详解</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_46109609/article/details/127881735">简单使用FRP实现本地mysql的内网穿透</a></li>
+</ol>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>阅读本文前需要先搞懂NAT、PAT、端口映射几个概念。</p>
+<p>内网宽带中的主机可以访问公网宽带主机，反之不可以访问；公网宽带主机可以和公网宽带主机双向访问；内网宽带中的主机和内网宽带中的主机互相无法访问。那么内网宽带中的客户机和公网宽带中的客户机如何访问另一个内网宽带中的服务器呢？这里就需要用到内网穿透技术。</p>
+<h2 id="NAT"><a href="#NAT" class="headerlink" title="NAT"></a>NAT</h2><p>NAT名字很准确，网络地址转换，就是替换IP报文头部的地址信息。NAT通常部署在一个组织的网络出口位置，通过将内部网络IP地址替换为出口的IP地址提供公网可达性和上层协议的连接能力。</p>
+<p>对于有Internet访问需求而内部又使用私有地址的网络，就要在组织的出口位置部署NAT网关，在报文离开私网进入Internet时，将源IP替换为公网地址，通常是出口设备的接口地址。一个对外的访问请求在到达目标以后，表现为由本组织出口设备发起，因此被请求的服务端可将响应由Internet发回出口网关。出口网关再将目的地址替换为私网的源主机地址，发回内部。这样一次由私网主机向公网服务端的请求和响应就在通信两端均无感知的情况下完成了。依据这种模型，数量庞大的内网主机就不再需要公有IP地址了。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/fangyaohui/Pictures@main/img/202502262001430.png" alt="这里写图片描述"></p>
+<p>在整个NAT的转换中，最关键的流程有以下几点</p>
+<ol>
+<li>网络被分为私网和公网两个部分，NAT网关设置在私网到公网的路由出口位置，双向流量必须都要经过NAT网关；</li>
+<li>网络访问只能先由私网侧发起，公网无法主动访问私网主机；</li>
+<li>NAT网关在两个访问方向上完成两次地址的转换或翻译，出方向做源信息替换，入方向做目的信息替换；</li>
+<li>NAT网关的存在对通信双方是保持透明的；</li>
+<li>NAT网关为了实现双向翻译的功能，需要维护一张关联表，把会话的信息保存下来。</li>
+</ol>
+<h3 id="动态NAT"><a href="#动态NAT" class="headerlink" title="动态NAT"></a><strong>动态NAT</strong></h3><p><img src="https://cdn.jsdelivr.net/gh/fangyaohui/Pictures@main/img/202502262003735.png" alt="这里写图片描述"></p>
+<h3 id="NAT重载（经常应用到实际中）"><a href="#NAT重载（经常应用到实际中）" class="headerlink" title="NAT重载（经常应用到实际中）"></a><strong>NAT重载</strong>（经常应用到实际中）</h3><p>这是最常用的NAT类型。NAT重载也是动态NAT，它利用源端口将多个私网ip地址映射到一个公网ip地址(多对一)。那么，它的独特之处何在呢?它也被称为端口地址特换(PAT)。通过使用PAT(NAT重载)，只需使用一个公网ip地址，就可将数千名用户连接到因特网。其核心之处就在于利用端口号实现公网和私网的转换。</p>
+<p>面对私网内部数量庞大的主机，如果NAT只进行IP地址的简单替换，就会产生一个问题：**当有多个内部主机去访问同一个服务器时，从返回的信息不足以区分响应应该转发到哪个内部主机。**此时，需要NAT设备根据传输层信息或其他上层协议去区分不同的会话，并且可能要对上层协议的标识进行转换，比如TCP或UDP端口号。这样NAT网关就可以将不同的内部连接访问映射到同一公网IP的不同传输层端口，通过这种方式实现公网IP的复用和解复用。这种方式也被称为端口转换PAT、NAPT或IP伪装，但更多时候直接被称为NAT，因为它是最典型的一种应用模式。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/fangyaohui/Pictures@main/img/202502262003619.png" alt="这里写图片描述"></p>
+<p><strong>也就是说，NAT利用端口号的唯一性实现了公网ip转换为私网ip的这一步。PAT（NAT重载）能够使用传输层端口号来标识主机，因此，从理论上说，最多可让大约65000台主机共用一个公有IP地址</strong></p>
+<p>但是这样就会有上面提到的那个问题：内网宽带中的客户机和公网宽带中的客户机如何访问另一个内网宽带中的服务器呢？</p>
+<h2 id="内网穿透"><a href="#内网穿透" class="headerlink" title="内网穿透"></a>内网穿透</h2><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>对于在NAT之后的服务器来说，其不是不能主动访问公网端口，而是不能反过来有效的被公网访问。所以可以在中间架设一个公网服务器，<strong>让在NAT之后的服务器持续主动访问这个拥有公网IP地址的服务器，</strong>，这样内网服务器就成功与公网中转服务器建立了一个连接通道。然后当有任何其他NAT后的客户端主动连接公网中转服务器时，公网服务器接收到连接请求之后马上把这连接请求通过先前建立好的隧道转发到内网服务器，内网服务器将响应数据包再原路转发回去，最终到达公网中转服务器，然后返回给其他NAT后的客户端。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/fangyaohui/Pictures@main/img/202502262002431.png" alt="img"></p>
+<h3 id="点对点穿透原理"><a href="#点对点穿透原理" class="headerlink" title="点对点穿透原理"></a>点对点穿透原理</h3><p>在内网穿透传输大量数据时如果都经过服务器中转的话，这样会对服务器端带宽压力比较大。只要是数据量很大，而一般利用中转服务器又需要一定规模投入的应用，我们都可以考虑用P2P技术。</p>
+<p>1.UDP打洞技术</p>
+<p>最为常见的实现P2P的方式是采用UDP打洞技术，UDP打洞技术是通过中间服务器的协助在各自的NAT网关上建立相关的表项，使P2P连接的双方发送的报文能够直接穿透对方的NAT网关，从而实现P2P客户端互连。如果两台位于NAT设备后面的P2P客户端希望在自己的NAT网关上打个洞，那么他们需要一个协助者——集中服务器，并且还需要一种用于打洞的Session建立机制。</p>
+<p>Session建立机制：</p>
+<p>假定客户端A要发起对客户端B的直接连接，具体的“打洞”过程如下：</p>
+<p>（1）A最初不知道如何向客户端B发起连接，于是A向集中服务器（本质上是一台被设置在公网上的服务器，建立P2P的双方都可以直接访问到这台服务器。位于NAT网关后面的客户端A和B都可以与一台已知的集中服务器建立连接，并通过这台集中服务器了解对方的信息并中转各自的信息）发送消息，请求集中服务器帮助建立与客户端B的UDP连接。</p>
+<p>（2）集中服务器将含有B的外网和内网的地址二元组发给A，同时，集中服务器将包含有A的外网和内网的地址二元组信息的消息也发给B。这样一来， A与B就都知道对方外网和内网的地址二元组信息了。</p>
+<p>（3）当A收到由集中服务器发来的包含B的外网和内网的地址二元组信息后，A开始向B的地址二元组发送UDP数据包，并且A会自动锁定第一个给出响应的B的地址二元组。同理，当B收到由集中服务器发来的A的外网和内网地址二元组信息后，也会开始向A的外网和内网的地址二元组发送UDP数据包，并且自动锁定第一个得到A回应的地址二元组。一旦A与B都向对方的NAT设备在外网上的地址二元组发送了数据包，就打开了A与B之间的“洞”，A与B向对方的外网地址发送数据，等效为向对方的客户端直接发送UDP数据包了。一旦应用程序确认已经可以通过往对方的外网地址发送数据包的方式让数据包到达NAT后面的目的应用程序，程序会自动停止继续发送用于“打洞”的数据包，转而开始真正的P2P数据传输。</p>
+<p>当然，UDP转换协议提供的“洞”不是绝对可靠的，多数NAT设备内部都有一个UDP转换的空闲状态计时器，如果在一段时间内没有UDP数据通信，NAT设备会关掉由“打洞”过程打出来的“洞”。如果P2P应用程序希望“洞”的存活时间不受NAT网关的限制，就最好在穿越NAT以后设定一个穿越的有效期。</p>
+<p>2.TCP打洞技术<br>从现在的主流应用的角度上来看，基于TCP的P2P应用显然不如基于UDP的应用那么广泛，但是也存在打洞的需求。TCP相对于UDP而言要复杂的多，TCP连接的建立要依赖于三次握手的交互，所以NAT网关在处理TCP连接的时候，需要更多的开销。但是，由于TCP协议完备的状态机机制，TCP反而比UDP更能精确的获取某个Session的生命期。</p>
+<p>一种新的代理类型 XTCP 能解决这个问题，实现方式可以是采用搭建FRP服务器的方式，在传输数据的两端都部署上FRP客户端用于建立直接的连接。</p>
+<blockquote>
+<p>为了安全起见，通常会在网络中加入防火墙，防火墙有入站规则和出站规则。如果不是非常严格的安全管控，通常是不会设置出站规则的，但是入站规则一般都会设置的，比如说外部可以通过80端口传入内网的WEB服务器访问网页，但是不能通过3389端口登陆内网的远程桌面。而在内网渗透的过程中碰到这种情况，我们也可以借助上面内网传统的方式实现穿透防火墙的入站规则。因为防火墙通常只拦截了入站，没有拦截出站，那么我们可以让内网服务器主动出站（主动连接到黑客的服务器），与黑客自己的服务器打通隧道，最终绕过防火墙连上3389远程桌面。</p>
+<p>还有一种情况就是我们已经拿下了内网其中一台并没有做任何防火墙规则的白名单服务器，但是我们想连上内网另一台做了入站规则的目标服务器，那么我们可以让这台白名单服务器作为一个跳板，让他先监听自身任意一个端口，然后在有任何用户连上这个端口之后，白名单服务器就主动连上内网的目标服务器，然后借助这台白名单服务器打通黑客和目标服务器的连接隧道。而在黑客工具中大名鼎鼎的lcx原理也就是如此，前者的实现是lcx的listen和slave命令，后者的实现是lcx的tran命令。</p>
+</blockquote>
+<blockquote>
+<p><strong>内网穿透传统方式会出现服务器和客户机之间的数据传输全部经过中转服务器，传输速度将受制于中转服务器的上下行带宽，不过稳定性很好，对于自己要购置的云主机要求就是大带宽，一般这种云主机按流量计费，传输的数据量越大价格自然越贵。所以点对点穿透便能解决流量带来的困扰，点对点可以实现服务器和客户机之间打洞直接进行数据通信，这种方式一般用于udp协议的传输，比如应用于远程NAS看视频听歌，但这种方式需要服务器和客户机都安装穿透工具，对用户访问端来说不够方便，而且这种方式受复杂网络环境影响较大，不能100%实现，稳定性欠缺。</strong></p>
+</blockquote>
+<h2 id="FRP内网穿透"><a href="#FRP内网穿透" class="headerlink" title="FRP内网穿透"></a>FRP内网穿透</h2><h3 id="前言-1"><a href="#前言-1" class="headerlink" title="前言"></a>前言</h3><p>FRP使用 Go 语言开发，可以支持 Windows、Linux、macOS、ARM 等多平台部署。frp内网穿透无需多复杂的配置就可以达到比较好的穿透效果，具有较强的扩展性，支持tcp, udp, http, https 协议，并且 web 服务支持根据域名进行路由转发。此外，**FRP 提供了一种新的代理类型 XTCP ，可以在传输大量数据时让流量不经过服务器中转，用于实现点对点穿透,**当然，此功能并不能保证在你的网络环境 100% 可用，成功率较低，而且还要求访问端也得运行 FRP 客户端 (目前手机端ios没有frp客户端软件)。由于实现条件较多，所以有文件传输需求的朋友但必须用frp的朋友还是建议买带宽稍大一点的 VPS 会比较省心。<strong>frp适合有linux基础的个人，且需要自购一个云主机做中转，企业追求稳定可以考虑其他方式。</strong></p>
+<h3 id="中转服务器FRP搭建"><a href="#中转服务器FRP搭建" class="headerlink" title="中转服务器FRP搭建"></a>中转服务器FRP搭建</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> wget <span class="string">&quot;https://github.com/fatedier/frp/releases/download/v0.33.0/frp_0.33.0_linux_amd64.tar.gz&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&gt; $ vi frps.ini</span><br><span class="line">[common]</span><br><span class="line">bind_port = 7000     <span class="comment">#隧道端口，默认配置中监听的是 7000 端口，可根据自己实际情况修改。</span></span><br><span class="line">subdomain_host = frp.abc.top  <span class="comment">#配置中转服务器域名绑定,可选配置，如果域名多可以设置一个</span></span><br><span class="line">authentication_method = token  <span class="comment">#启用token验证，frpc也需要加此参数</span></span><br><span class="line">token = changeit              <span class="comment">#token密码</span></span><br><span class="line">vhost_http_port = 80                 <span class="comment">#内网服务器http映射的端口，内网可以有多个网站使用这个端口</span></span><br><span class="line">vhost_https_port = 443               <span class="comment">#内网服务器https映射的端口，内网可以有多个网站使用这个端口</span></span><br><span class="line">dashboard_port = 7500   <span class="comment">#配置Dashboard监控frp状态的端口，后面可以直接访问http://frp.abc.top:7500/或http://中转服务器公网IP:7500/</span></span><br><span class="line">dashboard_user = admin  <span class="comment">#监控访问账户</span></span><br><span class="line">dashboard_pwd = admin   <span class="comment">#监控访问密码</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 前台启动frps</span></span><br><span class="line">./frps -c ./frps.ini</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="http://1.94.101.104:7500/static/#/">http://1.94.101.104:7500/static/#/</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#启动</span><br><span class="line">sudo systemctl start frps </span><br><span class="line">#关闭</span><br><span class="line">sudo systemctl stop frps</span><br><span class="line">#重启</span><br><span class="line">sudo systemctl restart frps</span><br><span class="line">#查看状态</span><br><span class="line">sudo systemctl status frps</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Windows中转服务器FRP搭建"><a href="#Windows中转服务器FRP搭建" class="headerlink" title="Windows中转服务器FRP搭建"></a>Windows中转服务器FRP搭建</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">[common]</span><br><span class="line">server_addr = 1.94.101.104</span><br><span class="line">server_port = 7000</span><br><span class="line">authentication_method = token  </span><br><span class="line">token = fyh2380514719</span><br><span class="line"></span><br><span class="line">[ssh]</span><br><span class="line"><span class="built_in">type</span> = tcp</span><br><span class="line">local_ip = 127.0.0.1</span><br><span class="line">local_port = 22</span><br><span class="line">remote_port = 6000</span><br><span class="line"></span><br><span class="line">[secret_ssh]                             </span><br><span class="line"><span class="built_in">type</span> = stcp            </span><br><span class="line">sk = abcdefg           </span><br><span class="line">local_ip = 127.0.0.1                                                                                            </span><br><span class="line">local_port = 22                                                                                                  </span><br><span class="line">remote_port = 6000 </span><br><span class="line"></span><br><span class="line">[web]            </span><br><span class="line"><span class="built_in">type</span> = http         </span><br><span class="line">local_port = 80   </span><br><span class="line">custom_domains = 1.94.101.104</span><br><span class="line">remote_port = 8000</span><br><span class="line"></span><br><span class="line">[mysql]</span><br><span class="line"><span class="built_in">type</span> = tcp</span><br><span class="line">local_ip = 127.0.0.1</span><br><span class="line">local_port = 3306</span><br><span class="line">remote_port = 13306</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">frpc.exe -c frpc.ini</span><br></pre></td></tr></table></figure>
+
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/other/">other</a></div><div class="post-share"><div class="social-share" data-image="/img/19.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2025/02/26/53%20Linux%E6%9C%8D%E5%8A%A1%E5%99%A8/" title="53 Linux服务器"><img class="cover" src="/img/6.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">53 Linux服务器</div></div><div class="info-2"><div class="info-item-1">53 Linux服务器基本信息服务器IP：1.94.101.104 华为云账号：15107031522 华为云密码：fyh2380514719 服务器登录密码：!Fyh2380514719 Linux相关命令12345678910111213141516171819202122232425# Linux命令行访问网页curl http://localhost:9200# 这里提供vim的一些操作帮助# Shift + I	编辑文档# Esc			退出编辑# :q!		    关闭文档# :wq!		保存文档并关闭# 解压# .tar.gz 后缀tar -zxvf 文件名# .tar.xz 后缀tar -Jxvf 文件名# 更新aptsudo apt update# 查看内存使用情况free -mtop# 查看指定端口是否占用netstat -tulnp | grep &lt;端口号&gt;  软件MySQL1234567891011121314# 使用MySQLmysql -uroot -p# 密码 fyh2380514719# 用户名 root# 服务启动sudo...</div></div></div></a><a class="pagination-related" href="/2025/02/26/55%20WebSocket/" title="55 WebSocket"><img class="cover" src="/img/9.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">55 WebSocket</div></div><div class="info-2"><div class="info-item-1">55 WebSocket参考资料 WebSocket  SpringBoot使用WebSocket  SpringBoot...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2025/02/26/21-1%20%E8%80%81%E5%B9%B4%E5%81%A5%E5%BA%B7%E5%9B%BE%E8%B0%B1/" title="21-1 老年健康图谱"><img class="cover" src="/img/6.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-02-26</div><div class="info-item-2">21-1 老年健康图谱</div></div><div class="info-2"><div class="info-item-1">21-1 老年健康图谱老年健康数据指标：  https://opendata.pku.edu.cn/dataverse/CHADS    中国老年健康调查（Chinese Longitudinal Healthy Longevity Survey, CLHLS）    复旦大学团队发布中文医疗健康个人助手，同时开源47万高质量数据集  Github 地址：https://github.com/FudanDISC/DISC-MedLLM   BIOS重磅更新！千万级医学知识图谱正式发布  BIOS 2022V2版数据集下载地址：https://bios.www.idea.edu.cn/Download      老年人医疗体检数据的分析及评价    中国老年人健康状况及影响因素分析——基于第8轮CLHLS数据   医疗NLP领域（主要关注中文） 评测数据集 与 论文等相关资源。  </div></div></div></a><a class="pagination-related" href="/2025/02/26/20%20BUG%E8%AE%B0%E5%BD%95/" title="20 BUG记录"><img class="cover" src="/img/17.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-02-26</div><div class="info-item-2">20 BUG记录</div></div><div class="info-2"><div class="info-item-1">20 BUG记录1、SpringBoot、Spring Cloud Alibaba和Spring Cloud版本对应这三个版本具有对应关系，注意不同版本之间的兼容性。详细对应关系请查看：版本说明 2、Nacos服务未注册在SpringBoot中引入Nacos依赖后，需要同样引入： 1234&lt;dependency&gt;    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;    &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;&lt;/dependency&gt;  不然会出现nacos服务未注册的情况。 3、机场后端Nacos无法正常启动问题描述： found character ‘@’ that cannot start any token. (Do not use @ for indentation)  in ‘reader’, line 49, column 18: ​          namespace:...</div></div></div></a><a class="pagination-related" href="/2025/02/26/31%20SDK%20&%20API/" title="09 Linux环境下搭建ELK（Elasticsearch+Logstash+Kibana）"><img class="cover" src="/img/4.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-02-26</div><div class="info-item-2">09 Linux环境下搭建ELK（Elasticsearch+Logstash+Kibana）</div></div><div class="info-2"><div class="info-item-1">31 SDK &amp; APIAPIAPI 的全称为 Application Programming Interface，翻译过来的意思就是应用程序编程接口。实际上，API 是一些预先定义的函数，目的是提供应用程序与开发人员基于某个软件或硬件，得以访问一组进程的能力。不需要直接去访问源码，或去深刻理解内部工作机制的细节。 知道该接口的请求地址就可以之间访问。 SDKSDK的全称为 Software Development Kit，翻译过来的意思就是软件开发工具包。这是一个覆盖面相当广泛的名词，简单来说就是：辅助开发某一类软件的相关文档、演示举例和一些工具的集合，这些都可以称为 SDK。 SDK 被开发出来的意义是为了减少开发者的工作量。例如：某公司开发出某种软件的某一功能，将其封装成 SDK（例如数据分析 SDK，就是能够实现数据分析功能的SDK），出售给其他需要的公司使用。这样就可以大大减少开发应用程序的工作量。 本质上是具有很强关联性的两个存在。我们可以将 SDK...</div></div></div></a><a class="pagination-related" href="/2025/02/26/40%20IDEA/" title="40 IDEA"><img class="cover" src="/img/17.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-02-26</div><div class="info-item-2">40 IDEA</div></div><div class="info-2"><div class="info-item-1">40 IDEAJAVA注解 1234567*** @Description $Param$$returns$* @Author yaoHui* @Date $date$*/   1groovyScript(&quot;if(\&quot;$&#123;_1&#125;\&quot;.length() == 2) &#123;return &#x27;&#x27;;&#125; else &#123;def result=&#x27;&#x27;; def params=\&quot;$&#123;_1&#125;\&quot;.replaceAll(&#x27;[\\\\[|\\\\]|\\\\s]&#x27;, &#x27;&#x27;).split(&#x27;,&#x27;).toList();for(i = 0; i &lt; params.size(); i++) &#123;if(i==0)&#123;result+=&#x27;* @param &#x27; + params[i] + &#x27; ...</div></div></div></a><a class="pagination-related" href="/2025/02/26/47%20Demo%20Repository/" title="47 Demo Repository"><img class="cover" src="/img/8.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-02-26</div><div class="info-item-2">47 Demo Repository</div></div><div class="info-2"><div class="info-item-1">47 Demo RepositorySpringCloud gateway+Spring Security + JWT实现登录和用户权限校验参考资料：  https://blog.csdn.net/yuan__once/article/details/127022613 微服务 spring gateway+nacos +security+JWT 认证授权  版本MySQL：8.0.22 Redis：3.0.503 0722在执行所有的SQL语句之前打印日志，所有的日志持续化保存。 MyBatis&amp;MyBatis-plus打印日志123456789#by zhengkai.blog.csdn.net#mybatis-plus配置控制台打印完整带参数SQL语句mybatis-plus:  configuration:    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl    mybatis-plus:  configuration:    log-impl:...</div></div></div></a><a class="pagination-related" href="/2025/02/26/50%20%E6%97%A5%E5%BF%97%E7%B3%BB%E7%BB%9F/" title="50 日志系统"><img class="cover" src="/img/9.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-02-26</div><div class="info-item-2">50 日志系统</div></div><div class="info-2"><div class="info-item-1">50 日志系统参考资料 【Spring Boot】Spring Boot日志详情：基于lombok的日志输出  前言日志文件就是帮助我们记录程序开发或者使用过程中的一些必要信息，帮助我们进行后期的维护和纠错 总之，日志是开发中不可或缺的一部分，它可以帮助开发人员快速排查问题，优化性能，并保证应用程序的安全和可靠性。 日志级别⽇志的级别分为：  trace：微量，少许的意思，级别最低； debug：需要调试时候的关键信息打印； info：普通的打印信息（默认⽇志级别）； warn：警告，不影响使⽤，但需要注意的问题； error：错误信息，级别较⾼的错误⽇志信息； fatal：致命的，因为代码异常导致程序退出执⾏的事件。  日志级别的设置12345# 日志级别设置logging:  level:    root: error    日志持久化12345# 设置日志文件的目录logging:  file:    path: D:\\home\\log  1234logging:  file:    name:...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">徐行</div><div class="author-info-description">道阻且长</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">66</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">44</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">19</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/fangyaohui"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#54-%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F"><span class="toc-number">1.</span> <span class="toc-text">54 内网穿透</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">1.1.</span> <span class="toc-text">参考资料</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.2.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NAT"><span class="toc-number">1.3.</span> <span class="toc-text">NAT</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A8%E6%80%81NAT"><span class="toc-number">1.3.1.</span> <span class="toc-text">动态NAT</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NAT%E9%87%8D%E8%BD%BD%EF%BC%88%E7%BB%8F%E5%B8%B8%E5%BA%94%E7%94%A8%E5%88%B0%E5%AE%9E%E9%99%85%E4%B8%AD%EF%BC%89"><span class="toc-number">1.3.2.</span> <span class="toc-text">NAT重载（经常应用到实际中）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F"><span class="toc-number">1.4.</span> <span class="toc-text">内网穿透</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86"><span class="toc-number">1.4.1.</span> <span class="toc-text">原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%82%B9%E5%AF%B9%E7%82%B9%E7%A9%BF%E9%80%8F%E5%8E%9F%E7%90%86"><span class="toc-number">1.4.2.</span> <span class="toc-text">点对点穿透原理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FRP%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F"><span class="toc-number">1.5.</span> <span class="toc-text">FRP内网穿透</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8D%E8%A8%80-1"><span class="toc-number">1.5.1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%AD%E8%BD%AC%E6%9C%8D%E5%8A%A1%E5%99%A8FRP%E6%90%AD%E5%BB%BA"><span class="toc-number">1.5.2.</span> <span class="toc-text">中转服务器FRP搭建</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Windows%E4%B8%AD%E8%BD%AC%E6%9C%8D%E5%8A%A1%E5%99%A8FRP%E6%90%AD%E5%BB%BA"><span class="toc-number">1.5.3.</span> <span class="toc-text">Windows中转服务器FRP搭建</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2025/02/26/01-%E4%BD%BF%E7%94%A8docker-compose%E5%AE%89%E8%A3%85ElasticSearch%E5%92%8Ckibana/" title="01 使用docker-compose安装ElasticSearch和kibana"><img src="/img/3.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="01 使用docker-compose安装ElasticSearch和kibana"/></a><div class="content"><a class="title" href="/2025/02/26/01-%E4%BD%BF%E7%94%A8docker-compose%E5%AE%89%E8%A3%85ElasticSearch%E5%92%8Ckibana/" title="01 使用docker-compose安装ElasticSearch和kibana">01 使用docker-compose安装ElasticSearch和kibana</a><time datetime="2025-02-26T10:58:17.000Z" title="发表于 2025-02-26 18:58:17">2025-02-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/02/26/04%20Prometheus+Grafana%E7%9B%91%E6%8E%A7SpringBoot%E9%A1%B9%E7%9B%AEJVM%E4%BF%A1%E6%81%AF/" title="04 Prometheus+Grafana监控SpringBoot项目JVM信息"><img src="/img/14.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="04 Prometheus+Grafana监控SpringBoot项目JVM信息"/></a><div class="content"><a class="title" href="/2025/02/26/04%20Prometheus+Grafana%E7%9B%91%E6%8E%A7SpringBoot%E9%A1%B9%E7%9B%AEJVM%E4%BF%A1%E6%81%AF/" title="04 Prometheus+Grafana监控SpringBoot项目JVM信息">04 Prometheus+Grafana监控SpringBoot项目JVM信息</a><time datetime="2025-02-26T10:58:17.000Z" title="发表于 2025-02-26 18:58:17">2025-02-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/02/26/02%20Nexus/" title="02 Nexus"><img src="/img/1.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="02 Nexus"/></a><div class="content"><a class="title" href="/2025/02/26/02%20Nexus/" title="02 Nexus">02 Nexus</a><time datetime="2025-02-26T10:58:17.000Z" title="发表于 2025-02-26 18:58:17">2025-02-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/02/26/05%20%E5%9F%BA%E4%BA%8EPrometheus%E5%92%8CGrafana%E5%AF%B9%20CPU%E5%86%85%E5%AD%98%E4%BB%A5%E5%8F%8A%E5%8A%A0%E6%B2%B9%E7%AB%99%E5%BE%AE%E6%9C%8D%E5%8A%A1%E8%BF%9B%E8%A1%8CJVM%E7%9B%91%E6%8E%A7/" title="05 基于Prometheus和Grafana对 CPU内存以及加油站微服务进行JVM监控"><img src="/img/2.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="05 基于Prometheus和Grafana对 CPU内存以及加油站微服务进行JVM监控"/></a><div class="content"><a class="title" href="/2025/02/26/05%20%E5%9F%BA%E4%BA%8EPrometheus%E5%92%8CGrafana%E5%AF%B9%20CPU%E5%86%85%E5%AD%98%E4%BB%A5%E5%8F%8A%E5%8A%A0%E6%B2%B9%E7%AB%99%E5%BE%AE%E6%9C%8D%E5%8A%A1%E8%BF%9B%E8%A1%8CJVM%E7%9B%91%E6%8E%A7/" title="05 基于Prometheus和Grafana对 CPU内存以及加油站微服务进行JVM监控">05 基于Prometheus和Grafana对 CPU内存以及加油站微服务进行JVM监控</a><time datetime="2025-02-26T10:58:17.000Z" title="发表于 2025-02-26 18:58:17">2025-02-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/02/26/06%20%E5%B1%80%E5%9F%9F%E7%BD%91/" title="06 局域网"><img src="/img/4.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="06 局域网"/></a><div class="content"><a class="title" href="/2025/02/26/06%20%E5%B1%80%E5%9F%9F%E7%BD%91/" title="06 局域网">06 局域网</a><time datetime="2025-02-26T10:58:17.000Z" title="发表于 2025-02-26 18:58:17">2025-02-26</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/index_img.png);"><div id="footer-wrap"><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.3</a></div><div class="footer_custom_text">道阻且长</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = true;
+document.body.addEventListener('input', POWERMODE);
+</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>75-02 操作系统 | 孤岛</title><meta name="author" content="徐行"><meta name="copyright" content="徐行"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="75-02 操作系统前言操作系统在本科的课程中就有过学习，一方面是因为时间较长了导致相关的记忆并不是很深刻，同时另一方面是因为在大学中学的操作系统仅仅只是为了应付考试，导致对其并不是真正的理解了。所以在这里再次对操作系统进行系统性的梳理和学习。 操作系统简单的来说就是对计算机系统资源的管理，类似一个管家，它负责管理你的计算机资源，比如：你的内存、你的外存、你的CPU、你的GPU等等，你所有的计算机">
+<meta property="og:type" content="article">
+<meta property="og:title" content="75-02 操作系统">
+<meta property="og:url" content="http://example.com/2025/02/26/75-02%20%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/index.html">
+<meta property="og:site_name" content="孤岛">
+<meta property="og:description" content="75-02 操作系统前言操作系统在本科的课程中就有过学习，一方面是因为时间较长了导致相关的记忆并不是很深刻，同时另一方面是因为在大学中学的操作系统仅仅只是为了应付考试，导致对其并不是真正的理解了。所以在这里再次对操作系统进行系统性的梳理和学习。 操作系统简单的来说就是对计算机系统资源的管理，类似一个管家，它负责管理你的计算机资源，比如：你的内存、你的外存、你的CPU、你的GPU等等，你所有的计算机">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/8.png">
+<meta property="article:published_time" content="2025-02-26T10:58:17.000Z">
+<meta property="article:modified_time" content="2025-02-26T12:28:07.829Z">
+<meta property="article:author" content="徐行">
+<meta property="article:tag" content="操作系统">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/8.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "75-02 操作系统",
+  "url": "http://example.com/2025/02/26/75-02%20%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/",
+  "image": "http://example.com/img/8.png",
+  "datePublished": "2025-02-26T10:58:17.000Z",
+  "dateModified": "2025-02-26T12:28:07.829Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "徐行",
+      "url": "http://example.com/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2025/02/26/75-02%20%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '75-02 操作系统',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">66</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">44</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">19</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 生活</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/shuoshuo/"><i class="fa-fw fa fa-comments-o"></i><span> 分享</span></a></li><li><a class="site-page child" href="/photos/"><i class="fa-fw fa fa-camera-retro"></i><span> 相册</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fa fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 影视</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/8.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">孤岛</span></a><a class="nav-page-title" href="/"><span class="site-name">75-02 操作系统</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 生活</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/shuoshuo/"><i class="fa-fw fa fa-comments-o"></i><span> 分享</span></a></li><li><a class="site-page child" href="/photos/"><i class="fa-fw fa fa-camera-retro"></i><span> 相册</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fa fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 影视</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">75-02 操作系统</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-02-26T10:58:17.000Z" title="发表于 2025-02-26 18:58:17">2025-02-26</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-02-26T12:28:07.829Z" title="更新于 2025-02-26 20:28:07">2025-02-26</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/">计算机基础</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">3.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>10分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="75-02-操作系统"><a href="#75-02-操作系统" class="headerlink" title="75-02 操作系统"></a>75-02 操作系统</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>操作系统在本科的课程中就有过学习，一方面是因为时间较长了导致相关的记忆并不是很深刻，同时另一方面是因为在大学中学的操作系统仅仅只是为了应付考试，导致对其并不是真正的理解了。所以在这里再次对操作系统进行系统性的梳理和学习。</p>
+<p>操作系统简单的来说就是对计算机系统资源的管理，类似一个管家，它负责管理你的计算机资源，比如：你的内存、你的外存、你的CPU、你的GPU等等，你所有的计算机资源都会由操作系统进行统一的管理。</p>
+<p>那么操作系统按照功能模块来分就可以分为：内存管理模块、文件（文件都是保存在外存的嘛）管理模块、进程（进程都是由CPU运行的嘛）管理模块、设备管理和网络系统等五大模块。其中内存、文件和进程管理最为重要。下面我们一步一步的去了解这个操作系统。</p>
+<h2 id="硬件结构"><a href="#硬件结构" class="headerlink" title="硬件结构"></a>硬件结构</h2><h3 id="CPU架构图"><a href="#CPU架构图" class="headerlink" title="CPU架构图"></a>CPU架构图</h3><p><img src="https://cdn.jsdelivr.net/gh/fangyaohui/Pictures@main/img/202502262026720.png" alt="image-20241021170702988"></p>
+<p>可以看到，一个 CPU 里通常会有多个 CPU 核心，比如上图中的 1 号和 2 号 CPU 核心，并且每个 CPU 核心都有自己的 L1 Cache 和 L2 Cache，而 L1 Cache 通常分为 dCache（数据缓存） 和 iCache（指令缓存），L3 Cache 则是多个核心共享的，这就是 CPU 典型的缓存层次。</p>
+<p>CPU 从内存中读取数据到 Cache 的时候，并不是一个字节一个字节读取，而是一块一块的方式来读取数据的，这一块一块的数据被称为 CPU Cache  Line（缓存块），所以 CPU Cache  Line 是 CPU 从内存读取数据到 Cache 的单位。</p>
+<h3 id="伪共享"><a href="#伪共享" class="headerlink" title="伪共享"></a>伪共享</h3><p><a target="_blank" rel="noopener" href="https://xiaolincoding.com/os/1_hardware/how_cpu_deal_task.html#%E5%88%86%E6%9E%90%E4%BC%AA%E5%85%B1%E4%BA%AB%E7%9A%84%E9%97%AE%E9%A2%98">https://xiaolincoding.com/os/1_hardware/how_cpu_deal_task.html#%E5%88%86%E6%9E%90%E4%BC%AA%E5%85%B1%E4%BA%AB%E7%9A%84%E9%97%AE%E9%A2%98</a></p>
+<p><img src="https://cdn.jsdelivr.net/gh/fangyaohui/Pictures@main/img/202502262027147.png" alt="image-20241021171922569"></p>
+<h3 id="调度器"><a href="#调度器" class="headerlink" title="调度器"></a>调度器</h3><p><img src="https://cdn.jsdelivr.net/gh/fangyaohui/Pictures@main/img/202502262026319.png" alt="image-20241021172929186"></p>
+<h3 id="中断"><a href="#中断" class="headerlink" title="中断"></a>中断</h3><p><img src="https://cdn.jsdelivr.net/gh/fangyaohui/Pictures@main/img/202502262026953.png" alt="image-20241021174117845"></p>
+<p>那 Linux 系统<strong>为了解决中断处理程序执行过长和中断丢失的问题，将中断过程分成了两个阶段，分别是「上半部和下半部分」</strong>。</p>
+<h3 id="CPU缓存一致性"><a href="#CPU缓存一致性" class="headerlink" title="CPU缓存一致性"></a>CPU缓存一致性</h3><p><img src="https://cdn.jsdelivr.net/gh/fangyaohui/Pictures@main/img/202502262026758.png" alt="image-20241022205653149"></p>
+<p>这是目前CPU的架构图，我们来看看CPU是如何运行的。</p>
+<p>目前的CPU具有多个核心，假设这个CPU具有两个核心，现在这两个核心分别运行着两个不同的线程，这些线程会把该线程目前需要用到的数据从内存中加载到CPU Cache中，假设现在两个线程都对变量a进行操作，都对其执行a++,两个线程执行完后，写入CPU Cache中，然后写会到内存中，此时的a会是2，与实际的3不符合。</p>
+<p>对于CPU Cache中的数据什么时候写回到内存中呢？现在有两种方法：写直达和写回。</p>
+<h4 id="写直达"><a href="#写直达" class="headerlink" title="写直达"></a>写直达</h4><p>很简单如果CPU进行修改了，直接把修改的值写到CPU Cache和内存中。</p>
+<h4 id="写回"><a href="#写回" class="headerlink" title="写回"></a>写回</h4><p>既然写直达由于每次写操作都会把数据写回到内存，⽽导致影响性能，于是为了要减少数据 写回内存的频率，就出现了写回（Write Back）的⽅法。 在写回机制中，当发⽣写操作时，新的数据仅仅被写⼊ Cache Block ⾥，只有当修改过的 Cache Block「被替换」时才需要写到内存中，减少了数据写回内存的频率，这样便可以提 ⾼系统的性能。</p>
+<p>可以发现写回这个⽅法，在把数据写⼊到 Cache 的时候，只有在缓存不命中，同时数据对应 的 Cache 中的 Cache Block 为脏标记的情况下，才会将数据写到内存中，⽽在缓存命中的情 况下，则在写⼊后 Cache 后，只需把该数据对应的 Cache Block 标记为脏即可，⽽不⽤写到 内存⾥</p>
+<p>回到原来的问题上，如何解决CPU缓存一致性的问题呢？有两种方法：写传播和事务串行化。</p>
+<p>写传播就是写了之后告诉所有CPU核心，该Cache值被修改了。</p>
+<p>但是如何只是进行写传播的话，会导致其它CPU核心收到的修改顺序出现问题，就导致CPU核心进行错误的处理。</p>
+<p>那么事务串行化就是为了解决顺序不一致的问题。那么要实现事务的串行化就需要满足两点：</p>
+<ol>
+<li>CPU核心对于Cache中数据的操作，需要同步给其它CPU核心；</li>
+<li>确保同一时刻只能有一个CPU核心进行修改，那就是引入了“锁”的概念，那么对于CPU核心中拥有相同数据的Cache就会给它加入锁，对于CPU核心只有拿到了锁才能进行数据修改。</li>
+</ol>
+<p>写传播的实现方式就是总线嗅探，CPU 需要每时每刻监听总线上的⼀切活动，但是不管别的 核⼼的 Cache 是否缓存相同的数据，都需要发出⼀个⼴播事件，这⽆疑会加重总线的负载。</p>
+<p>事务的串行化的实现方式是一个基于总线嗅探的协议，这个协议就是MESI，MESI协议就是：</p>
+<ul>
+<li>Modified 已修改；</li>
+<li>Exclusive 独占；</li>
+<li>Shared 共享；</li>
+<li>Invalidated 失效；</li>
+</ul>
+<ol>
+<li>当 A 号 CPU 核⼼从内存读取变量 i 的值，数据被缓存在 A 号 CPU 核⼼⾃⼰的 Cache ⾥ ⾯，此时其他 CPU 核⼼的 Cache 没有缓存该数据，于是标记 Cache Line 状态为「独 占」，此时其 Cache 中的数据与内存是⼀致的； </li>
+<li>然后 B 号 CPU 核⼼也从内存读取了变量 i 的值，此时会发送消息给其他 CPU 核⼼，由 于 A 号 CPU 核⼼已经缓存了该数据，所以会把数据返回给 B 号 CPU 核⼼。在这个时 候， A 和 B 核⼼缓存了相同的数据，Cache Line 的状态就会变成「共享」，并且其 Cache 中的数据与内存也是⼀致的； </li>
+<li>当 A 号 CPU 核⼼要修改 Cache 中 i 变量的值，发现数据对应的 Cache Line 的状态是共享状态，则要向所有的其他 CPU 核⼼⼴播⼀个请求，要求先把其他核⼼的 Cache 中对 应的 Cache Line 标记为「⽆效」状态，然后 A 号 CPU 核⼼才更新 Cache ⾥⾯的数据， 同时标记 Cache Line 为「已修改」状态，此时 Cache 中的数据就与内存不⼀致了。</li>
+<li>如果 A 号 CPU 核⼼「继续」修改 Cache 中 i 变量的值，由于此时的 Cache Line 是「已 修改」状态，因此不需要给其他 CPU 核⼼发送消息，直接更新数据即可。 </li>
+<li>如果 A 号 CPU 核⼼的 Cache ⾥的 i 变量对应的 Cache Line 要被「替换」，发现  Cache Line 状态是「已修改」状态，就会在替换前先把数据同步到内存。</li>
+</ol>
+<h2 id="操作系统结构"><a href="#操作系统结构" class="headerlink" title="操作系统结构"></a>操作系统结构</h2><h3 id="内核"><a href="#内核" class="headerlink" title="内核"></a>内核</h3><p><img src="https://cdn.jsdelivr.net/gh/fangyaohui/Pictures@main/img/202502262026129.png" alt="image-20241021175358520"></p>
+<h2 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h2><h3 id="虚拟内存"><a href="#虚拟内存" class="headerlink" title="虚拟内存"></a>虚拟内存</h3><p><img src="https://cdn.jsdelivr.net/gh/fangyaohui/Pictures@main/img/202502262026631.png" alt="image-20241021180128082"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/fangyaohui/Pictures@main/img/202502262026240.png" alt="image-20241021180247774"></p>
+<h3 id="内存分段"><a href="#内存分段" class="headerlink" title="内存分段"></a>内存分段</h3><p><img src="https://cdn.jsdelivr.net/gh/fangyaohui/Pictures@main/img/202502262026581.png" alt="image-20241021181307680"></p>
+<p>程序是由若⼲个逻辑分段组成的，如可由代码分段、数据分段、栈段、堆段组成。不同的段 是有不同的属性的，所以就⽤分段（Segmentation）的形式把这些段分离出来。</p>
+<p>操作系统会把一个程序分为几段，代码段、数据段、栈段和堆段。</p>
+<p>在虚拟地址中会保存该地址的所属的段号，在段内偏移量是多少。通过段号可以找到该段表，通过段表得到该段的起始地址，通过虚拟地址的段内偏移量既可以得到虚拟地址对应的物理内存地址。</p>
+<ul>
+<li><strong>外部碎片问题</strong></li>
+</ul>
+<p>虽然分段提供了灵活的内存管理，但由于不同段的大小和生命周期各不相同，随着时间的推移，内存中会出现未使用的小碎片。这些碎片无法被有效利用，从而导致内存浪费，称为“外部碎片”。</p>
+<p><strong>例子</strong>：假设有3个段分别为A、B、C，它们分配在物理内存中。但如果B段被释放了，这就会在A和C之间留下一个未使用的小空间，这个空间可能不足以容纳新段，导致新的大段无法分配。</p>
+<ul>
+<li><strong>地址转换复杂</strong></li>
+</ul>
+<p>每个内存段都有自己的基地址和大小，操作系统在访问内存时需要通过段表来查找段的起始地址，然后再加上段内偏移量才能得到物理地址。这增加了地址转换的复杂性和管理开销。</p>
+<p><strong>例子</strong>：每次访问内存时，CPU需要查找段表以确定段的基地址，这会使内存访问变得比直接使用物理地址慢。</p>
+<ul>
+<li><strong>不适合现代大内存模型</strong></li>
+</ul>
+<p>随着程序复杂性和内存需求的增加，分段机制无法很好地处理大规模的内存需求。现代程序通常需要访问大块的连续内存，而分段提供的逻辑段无法满足这一需求。</p>
+<p><strong>例子</strong>：某些现代应用程序（如大型数据库或机器学习模型）需要巨大的内存空间，而分段机制的划分方式在处理大规模连续内存时效率不高，无法与分页机制一样灵活地分配内存。</p>
+<h3 id="内存分页"><a href="#内存分页" class="headerlink" title="内存分页"></a>内存分页</h3><p>分段的好处就是能产⽣连续的内存空间，但是会出现内存碎⽚和内存交换的空间太⼤的问 题。 要解决这些问题，那么就要想出能少出现⼀些内存碎⽚的办法。另外，当需要进⾏内存交换 的时候，让需要交换写⼊或者从磁盘装载的数据更少⼀点，这样就可以解决问题了。这个办 法，也就是内存分⻚（Paging）。</p>
+<p>分⻚是把整个虚拟和物理内存空间切成⼀段段固定尺⼨的⼤⼩。这样⼀个连续并且尺⼨固定 的内存空间，我们叫⻚（Page）。在 Linux 下，每⼀⻚的⼤⼩为 4KB 。</p>
+<p>分页相对于分段来说就是把一页的空间快速缩小，之前的一段会很大比如100MB等等，现在一页4KB（Linux操作系统上），这样计算对内存进行回收，发生内存碎片的空间会很少，相对来说就可以认为无内存碎片。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/fangyaohui/Pictures@main/img/202502262026462.png" alt="image-20241021192013811"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/fangyaohui/Pictures@main/img/202502262027319.png" alt="image-20241021192113626"></p>
+<p>但是这样会导致一个问题就是空间问题。</p>
+<p>因为操作系统是可以同时运⾏⾮常多的进程的，那这不就意味着⻚表会⾮常的庞⼤。 在 32 位的环境下，虚拟地址空间共有 4GB，假设⼀个⻚的⼤⼩是 4KB（2^12），那么就需 要⼤约 100 万 （2^20） 个⻚，每个「⻚表项」需要 4 个字节⼤⼩来存储，那么整个 4GB 空 间的映射就需要有 4MB 的内存来存储⻚表。 这 4MB ⼤⼩的⻚表，看起来也不是很⼤。但是要知道每个进程都是有⾃⼰的虚拟地址空间 的，也就说都有⾃⼰的⻚表。 那么， 100 个进程的话，就需要 400MB 的内存来存储⻚表，这是⾮常⼤的内存了，更别说 64 位的环境了。</p>
+<p>那么页表存储的缺点也出来了就是在多进程环境下，页表占据的空间过大。</p>
+<h3 id="多级页表"><a href="#多级页表" class="headerlink" title="多级页表"></a>多级页表</h3><p><img src="https://cdn.jsdelivr.net/gh/fangyaohui/Pictures@main/img/202502262027664.png" alt="image-20241021194336762"></p>
+<p>你可能会问，分了⼆级表，映射 4GB 地址空间就需要 4KB（⼀级⻚表）+ 4MB（⼆ 级⻚表）的内存，这样占⽤空间不是更⼤了吗？</p>
+<p>每个进程都有 4GB 的虚拟地址空间，⽽显然对于⼤多数程序来说，其使⽤到的空间远未达到 4GB，因为会存在部分对应的⻚表项都是空的，根本没有分配，对于已分配的⻚表项，如果 存在最近⼀定时间未访问的⻚表，在物理内存紧张的情况下，操作系统会将⻚⾯换出到硬 盘，也就是说不会占⽤物理内存。 如果使⽤了⼆级分⻚，⼀级⻚表就可以覆盖整个 4GB 虚拟地址空间，但如果某个⼀级⻚表的 ⻚表项没有被⽤到，也就不需要创建这个⻚表项对应的⼆级⻚表了，即可以在需要时才创建 ⼆级⻚表。做个简单的计算，假设只有 20% 的⼀级⻚表项被⽤到了，那么⻚表占⽤的内存空 间就只有 4KB（⼀级⻚表） + 20% * 4MB（⼆级⻚表）&#x3D; 0.804MB ，这对⽐单级⻚表的 4MB 是不是⼀个巨⼤的节约？</p>
+<p><img src="https://cdn.jsdelivr.net/gh/fangyaohui/Pictures@main/img/202502262027756.png" alt="image-20241021194453588"></p>
+<h3 id="段页式内存管理"><a href="#段页式内存管理" class="headerlink" title="段页式内存管理"></a>段页式内存管理</h3><p><img src="https://cdn.jsdelivr.net/gh/fangyaohui/Pictures@main/img/202502262028587.png" alt="image-20241021195336021"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/fangyaohui/Pictures@main/img/202502262028529.png" alt="image-20241021195411259"></p>
+<p>段⻚式地址变换中要得到物理地址须经过三次内存访问：</p>
+<ul>
+<li>第⼀次访问段表，得到⻚表起始地址； </li>
+<li>第⼆次访问⻚表，得到物理⻚号； </li>
+<li>第三次将物理⻚号与⻚内位移组合，得到物理地址。</li>
+</ul>
+<p>可⽤软、硬件相结合的⽅法实现段⻚式地址变换，这样虽然增加了硬件成本和系统开销，但 提⾼了内存的利⽤率。</p>
+<h3 id="Linux内存管理"><a href="#Linux内存管理" class="headerlink" title="Linux内存管理"></a>Linux内存管理</h3><p>Linux 内存主要采⽤的是⻚式内存管理，但同时也不可避免地涉及了段机制。Linux 系统中的每个段都是从 0 地址开始的整个 4GB 虚拟空间（32 位环境下），也就是所 有的段的起始地址都是⼀样的。这意味着，Linux 系统中的代码，包括操作系统本身的代码和 应⽤程序代码，所⾯对的地址空间都是线性地址空间（虚拟地址），这种做法相当于屏蔽了 处理器中的逻辑地址概念，段只被⽤于访问控制和内存保护。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/fangyaohui/Pictures@main/img/202502262028510.png" alt="image-20241021195934657"></p>
+<p>再来说说，内核空间与⽤户空间的区别： 进程在⽤户态时，只能访问⽤户空间内存； 只有进⼊内核态后，才可以访问内核空间的内存； 虽然每个进程都各⾃有独⽴的虚拟内存，但是每个虚拟内存中的内核地址，其实关联的都是 相同的物理内存。这样，进程切换到内核态后，就可以很⽅便地访问内核空间内存。</p>
+<h2 id="进程与线程"><a href="#进程与线程" class="headerlink" title="进程与线程"></a>进程与线程</h2></article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></div><div class="post-share"><div class="social-share" data-image="/img/8.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2025/02/26/75-01%20%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" title="75-01 数据结构"><img class="cover" src="/img/4.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">75-01 数据结构</div></div><div class="info-2"><div class="info-item-1">75-01 数据结构参考资料 树形 DP    树二叉查找树二叉树具有以下性质：左子树的键值小于根的键值，右子树的键值大于根的键值。  如果根节点选的不好会导致二叉树过深。 平衡二叉树平衡二叉树（AVL树）在符合二叉查找树的条件下，还满足任何节点的两个子树的高度最大差为1。下面的两张图片，左边是AVL树，它的任何节点的两个子树的高度差&lt;&#x3D;1；右边的不是AVL树，其根节点的左子树高度为3，而右子树高度为1；  那么这里就会涉及到一些复杂的问题，如果我对这个树进行增删改查之后，导致了这个树不平衡了该怎么办？ ...</div></div></div></a><a class="pagination-related" href="/2025/02/26/74-01%20Python/" title="74-01 Python"><img class="cover" src="/img/19.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">74-01 Python</div></div><div class="info-2"><div class="info-item-1">74-01 Python结合你对Java的熟悉程度，我会详细介绍Python中的面向对象编程（OOP）语法，并与Java进行对比。Python和Java的OOP概念相似，但语法和一些实现细节有所不同。 面向对象1. 类与对象Java：1234567891011121314151617181920class Person &#123;    String name;    int age;    Person(String name, int age) &#123;        this.name = name;        this.age = age;    &#125;    void greet() &#123;        System.out.println(&quot;Hello, my name is &quot; + name);    &#125;&#125;public class Main &#123;    public static void main(String[] args) &#123;        Person person =...</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">徐行</div><div class="author-info-description">道阻且长</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">66</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">44</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">19</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/fangyaohui"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#75-02-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.</span> <span class="toc-text">75-02 操作系统</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A1%AC%E4%BB%B6%E7%BB%93%E6%9E%84"><span class="toc-number">1.2.</span> <span class="toc-text">硬件结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CPU%E6%9E%B6%E6%9E%84%E5%9B%BE"><span class="toc-number">1.2.1.</span> <span class="toc-text">CPU架构图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%AA%E5%85%B1%E4%BA%AB"><span class="toc-number">1.2.2.</span> <span class="toc-text">伪共享</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%83%E5%BA%A6%E5%99%A8"><span class="toc-number">1.2.3.</span> <span class="toc-text">调度器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%AD%E6%96%AD"><span class="toc-number">1.2.4.</span> <span class="toc-text">中断</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CPU%E7%BC%93%E5%AD%98%E4%B8%80%E8%87%B4%E6%80%A7"><span class="toc-number">1.2.5.</span> <span class="toc-text">CPU缓存一致性</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%86%99%E7%9B%B4%E8%BE%BE"><span class="toc-number">1.2.5.1.</span> <span class="toc-text">写直达</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%86%99%E5%9B%9E"><span class="toc-number">1.2.5.2.</span> <span class="toc-text">写回</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84"><span class="toc-number">1.3.</span> <span class="toc-text">操作系统结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E6%A0%B8"><span class="toc-number">1.3.1.</span> <span class="toc-text">内核</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="toc-number">1.4.</span> <span class="toc-text">内存管理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98"><span class="toc-number">1.4.1.</span> <span class="toc-text">虚拟内存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E5%88%86%E6%AE%B5"><span class="toc-number">1.4.2.</span> <span class="toc-text">内存分段</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E5%88%86%E9%A1%B5"><span class="toc-number">1.4.3.</span> <span class="toc-text">内存分页</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E7%BA%A7%E9%A1%B5%E8%A1%A8"><span class="toc-number">1.4.4.</span> <span class="toc-text">多级页表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AE%B5%E9%A1%B5%E5%BC%8F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="toc-number">1.4.5.</span> <span class="toc-text">段页式内存管理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Linux%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="toc-number">1.4.6.</span> <span class="toc-text">Linux内存管理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B"><span class="toc-number">1.5.</span> <span class="toc-text">进程与线程</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2025/02/26/01-%E4%BD%BF%E7%94%A8docker-compose%E5%AE%89%E8%A3%85ElasticSearch%E5%92%8Ckibana/" title="01 使用docker-compose安装ElasticSearch和kibana"><img src="/img/3.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="01 使用docker-compose安装ElasticSearch和kibana"/></a><div class="content"><a class="title" href="/2025/02/26/01-%E4%BD%BF%E7%94%A8docker-compose%E5%AE%89%E8%A3%85ElasticSearch%E5%92%8Ckibana/" title="01 使用docker-compose安装ElasticSearch和kibana">01 使用docker-compose安装ElasticSearch和kibana</a><time datetime="2025-02-26T10:58:17.000Z" title="发表于 2025-02-26 18:58:17">2025-02-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/02/26/04%20Prometheus+Grafana%E7%9B%91%E6%8E%A7SpringBoot%E9%A1%B9%E7%9B%AEJVM%E4%BF%A1%E6%81%AF/" title="04 Prometheus+Grafana监控SpringBoot项目JVM信息"><img src="/img/14.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="04 Prometheus+Grafana监控SpringBoot项目JVM信息"/></a><div class="content"><a class="title" href="/2025/02/26/04%20Prometheus+Grafana%E7%9B%91%E6%8E%A7SpringBoot%E9%A1%B9%E7%9B%AEJVM%E4%BF%A1%E6%81%AF/" title="04 Prometheus+Grafana监控SpringBoot项目JVM信息">04 Prometheus+Grafana监控SpringBoot项目JVM信息</a><time datetime="2025-02-26T10:58:17.000Z" title="发表于 2025-02-26 18:58:17">2025-02-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/02/26/02%20Nexus/" title="02 Nexus"><img src="/img/1.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="02 Nexus"/></a><div class="content"><a class="title" href="/2025/02/26/02%20Nexus/" title="02 Nexus">02 Nexus</a><time datetime="2025-02-26T10:58:17.000Z" title="发表于 2025-02-26 18:58:17">2025-02-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/02/26/05%20%E5%9F%BA%E4%BA%8EPrometheus%E5%92%8CGrafana%E5%AF%B9%20CPU%E5%86%85%E5%AD%98%E4%BB%A5%E5%8F%8A%E5%8A%A0%E6%B2%B9%E7%AB%99%E5%BE%AE%E6%9C%8D%E5%8A%A1%E8%BF%9B%E8%A1%8CJVM%E7%9B%91%E6%8E%A7/" title="05 基于Prometheus和Grafana对 CPU内存以及加油站微服务进行JVM监控"><img src="/img/2.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="05 基于Prometheus和Grafana对 CPU内存以及加油站微服务进行JVM监控"/></a><div class="content"><a class="title" href="/2025/02/26/05%20%E5%9F%BA%E4%BA%8EPrometheus%E5%92%8CGrafana%E5%AF%B9%20CPU%E5%86%85%E5%AD%98%E4%BB%A5%E5%8F%8A%E5%8A%A0%E6%B2%B9%E7%AB%99%E5%BE%AE%E6%9C%8D%E5%8A%A1%E8%BF%9B%E8%A1%8CJVM%E7%9B%91%E6%8E%A7/" title="05 基于Prometheus和Grafana对 CPU内存以及加油站微服务进行JVM监控">05 基于Prometheus和Grafana对 CPU内存以及加油站微服务进行JVM监控</a><time datetime="2025-02-26T10:58:17.000Z" title="发表于 2025-02-26 18:58:17">2025-02-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/02/26/06%20%E5%B1%80%E5%9F%9F%E7%BD%91/" title="06 局域网"><img src="/img/4.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="06 局域网"/></a><div class="content"><a class="title" href="/2025/02/26/06%20%E5%B1%80%E5%9F%9F%E7%BD%91/" title="06 局域网">06 局域网</a><time datetime="2025-02-26T10:58:17.000Z" title="发表于 2025-02-26 18:58:17">2025-02-26</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/index_img.png);"><div id="footer-wrap"><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.3</a></div><div class="footer_custom_text">道阻且长</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = true;
+document.body.addEventListener('input', POWERMODE);
+</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
