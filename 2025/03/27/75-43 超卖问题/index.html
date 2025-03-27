@@ -1,0 +1,184 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>75-43 超卖问题 | 孤岛</title><meta name="author" content="徐行"><meta name="copyright" content="徐行"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="75-43 超卖问题前言先来就库存超卖的问题作描述：一般电子商务网站都会遇到如团购、秒杀、特价之类的活动，而这样的活动有一个共同的特点就是访问量激增、上千甚至上万人抢购一个商品。然而，作为活动商品，库存肯定是很有限的，如何控制库存不让出现超买，以防止造成不必要的损失是众多电子商务网站程序员头疼的问题，这同时也是最基本的问题。 在秒杀系统设计中，超卖是一个经典、常见的问题，任何商品都会有数量上限，如">
+<meta property="og:type" content="article">
+<meta property="og:title" content="75-43 超卖问题">
+<meta property="og:url" content="http://example.com/2025/03/27/75-43%20%E8%B6%85%E5%8D%96%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:site_name" content="孤岛">
+<meta property="og:description" content="75-43 超卖问题前言先来就库存超卖的问题作描述：一般电子商务网站都会遇到如团购、秒杀、特价之类的活动，而这样的活动有一个共同的特点就是访问量激增、上千甚至上万人抢购一个商品。然而，作为活动商品，库存肯定是很有限的，如何控制库存不让出现超买，以防止造成不必要的损失是众多电子商务网站程序员头疼的问题，这同时也是最基本的问题。 在秒杀系统设计中，超卖是一个经典、常见的问题，任何商品都会有数量上限，如">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/17.png">
+<meta property="article:published_time" content="2025-03-27T11:40:17.000Z">
+<meta property="article:modified_time" content="2025-03-27T12:14:17.016Z">
+<meta property="article:author" content="徐行">
+<meta property="article:tag" content="场景题">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/17.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "75-43 超卖问题",
+  "url": "http://example.com/2025/03/27/75-43%20%E8%B6%85%E5%8D%96%E9%97%AE%E9%A2%98/",
+  "image": "http://example.com/img/17.png",
+  "datePublished": "2025-03-27T11:40:17.000Z",
+  "dateModified": "2025-03-27T12:14:17.016Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "徐行",
+      "url": "http://example.com/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2025/03/27/75-43%20%E8%B6%85%E5%8D%96%E9%97%AE%E9%A2%98/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '75-43 超卖问题',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">106</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">78</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">29</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 生活</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/shuoshuo/"><i class="fa-fw fa fa-comments-o"></i><span> 分享</span></a></li><li><a class="site-page child" href="/photos/"><i class="fa-fw fa fa-camera-retro"></i><span> 相册</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fa fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 影视</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/17.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">孤岛</span></a><a class="nav-page-title" href="/"><span class="site-name">75-43 超卖问题</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 生活</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/shuoshuo/"><i class="fa-fw fa fa-comments-o"></i><span> 分享</span></a></li><li><a class="site-page child" href="/photos/"><i class="fa-fw fa fa-camera-retro"></i><span> 相册</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fa fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 影视</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">75-43 超卖问题</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-03-27T11:40:17.000Z" title="发表于 2025-03-27 19:40:17">2025-03-27</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-03-27T12:14:17.016Z" title="更新于 2025-03-27 20:14:17">2025-03-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%9C%BA%E6%99%AF%E9%A2%98/">场景题</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">791</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>2分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="75-43-超卖问题"><a href="#75-43-超卖问题" class="headerlink" title="75-43 超卖问题"></a>75-43 超卖问题</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>先来就库存超卖的问题作描述：一般电子商务网站都会遇到如团购、秒杀、特价之类的活动，而这样的活动有一个共同的特点就是访问量激增、上千甚至上万人抢购一个商品。然而，作为活动商品，库存肯定是很有限的，如何控制库存不让出现超买，以防止造成不必要的损失是众多电子商务网站程序员头疼的问题，这同时也是最基本的问题。</p>
+<p>在秒杀系统设计中，超卖是一个经典、常见的问题，任何商品都会有数量上限，如何避免成功下订单买到商品的人数不超过商品数量的上限，这是每个抢购活动都要面临的难点。</p>
+<p>核心目标：保证订单数不超过商品数量的上限。</p>
+<h2 id="场景举例"><a href="#场景举例" class="headerlink" title="场景举例"></a>场景举例</h2><p>在多个用户同时发起对同一个商品的下单请求时，先查询商品库存，再修改商品库存，会出现资源竞争问题，导致库存的最终结果出现异常。问题：当商品A一共有库存15件，用户甲先下单10件，用户乙下单8件，这时候库存只能满足一个人下单成功，如果两个人同时提交，就出现了超卖的问题。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/fangyaohui/Pictures@main/img/202503271931295.png" alt="在这里插入图片描述"></p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>其主要问题在于：事务A和B在对同一个数据进行查询的时候，并没有锁住当前数据，导致两个事务都认为其内存都能够支持下单。</p>
+<p>那么根据这种情况，解决方法就比较明显了，加锁，按照目前数据库中锁的粒度，分为悲观锁和乐观锁，那么区别就在于是否在一开始就上锁：</p>
+<ol>
+<li>悲观锁，在事务开始的时候，通过Select for update来获得指定数据的排它锁，在这个事务提交之前，其它事务都无法获得该数据的排它锁和共享锁；</li>
+<li>乐观锁，通过加版本号来解决，在更新库存的时候判断事务开始查询到的版本号信息是否和即将更新的数据的版本号一致，如果不一致则无法更新，更新失败，重试即可；</li>
+<li>通过Redis对目标库存进行假设控制，因为Redis是单线程处理命令的，所以天然的保证原子性（单个命令），使用setnx加锁；</li>
+<li>还可以预热，需要高性能的情况下，把库存信息预先保存到Redis，由Redis进行原子化的扣减操作，然后通过消息队列异步的保存到MySQL中，如果认为在大库存情况下其性能阻塞过于严重，可以把这个大库存分为几个桶，分治的思想来解决其目前存在的问题；</li>
+</ol>
+<p>除去上锁，还有一种目前比较优的解决方案：分阶段排队下单方案。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/crazymakercircle/article/details/120521674#:~:text=%E6%9C%AC%E6%96%87%E4%BB%8B%E7%BB%8D%E4%BA%86%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E4%B8%AD%EE%80%80%E8%B6%85%E5%8D%96%E9%97%AE%E9%A2%98%EE%80%81%E7%9A%84%E5%8E%9F%E5%9B%A0%E3%80%81%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%E5%92%8C%E5%AE%9E%E7%8E%B0%E6%AD%A5%E9%AA%A4%EF%BC%8C%E4%BB%A5%E5%8F%8A%E5%B8%B8%E8%A7%81%E7%9A%84%E9%94%81%E6%9C%BA%E5%88%B6%E5%92%8C%E6%95%B0%E6%8D%AE%E5%BA%93%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB%E7%9A%84%E5%BD%B1%E5%93%8D%E3%80%82%E6%96%87%E7%AB%A0%E7%94%A8%E5%9B%BE%E8%A7%A3%E3%80%81%E7%A7%92%E6%87%82%E5%92%8C%E5%8F%B2%E4%B8%8A%E6%9C%80%E5%85%A8%E7%9A%84%E6%96%B9%E5%BC%8F%EF%BC%8C%E5%B8%AE%E5%8A%A9%E8%AF%BB%E8%80%85%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E7%A7%92%E6%9D%80%E8%B6%85%E5%8D%96%E9%97%AE%E9%A2%98%E7%9A%84%E6%A0%B8%E5%BF%83%E9%80%BB%E8%BE%91%E5%92%8C%E6%8A%80%E6%9C%AF%E7%BB%86%E8%8A%82%E3%80%82">秒杀：超卖问题（图解+秒懂+史上最全）</a></li>
+<li></li>
+</ol>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%9C%BA%E6%99%AF%E9%A2%98/">场景题</a></div><div class="post-share"><div class="social-share" data-image="/img/17.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2025/03/27/75-42%20RPC/" title="75-42 RPC"><img class="cover" src="/img/20.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">75-42 RPC</div></div><div class="info-2"><div class="info-item-1">75-42 RPC</div></div></div></a><a class="pagination-related" href="/2025/03/27/75-44%20%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/" title="75-44 分布式锁超时问题"><img class="cover" src="/img/21.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">75-44 分布式锁超时问题</div></div><div class="info-2"><div class="info-item-1">75-44 分布式锁超时问题前言关于Redis分布式锁，可能就会存在一个问题，A线程获取到了一个锁，并把这个锁设置了超时时间，为了避免死锁的问题，但是我们对应的业务处理耗时是不定的，所以可能这次的耗时比超时时间长，导致锁超时自动释放了，这时候B线程同样来获取这个锁，结果就是可以获取到这个锁，所以就会出现问题。 布式锁最基本的性质相违背: 在任意一个时刻, 只有一个客户端持有锁, 即独享 使用Redisson来解决锁超时的问题那么久有一个疑问了，Redisson是如何对锁超时问题进行解决的呢？那么这里就涉及到Redisson中提出的看门狗机制了。 一图见  Redisson 锁的加锁机制如上图所示，线程去获取锁，获取成功则执行lua脚本，保存数据到redis数据库。如果获取失败: 一直通过while循环尝试获取锁(可自定义等待时间，超时后返回失败)，获取成功后，执行lua脚本，保存数据到redis数据库。Redisson提供的分布式锁是支持锁自动续期的，也就是说，如果线程仍旧没有执行完，那么redisson会自动给redis中的目标key延长超时时间，这在Redisson中称之为...</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">徐行</div><div class="author-info-description">道阻且长</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">106</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">78</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">29</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/fangyaohui"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#75-43-%E8%B6%85%E5%8D%96%E9%97%AE%E9%A2%98"><span class="toc-number">1.</span> <span class="toc-text">75-43 超卖问题</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF%E4%B8%BE%E4%BE%8B"><span class="toc-number">1.2.</span> <span class="toc-text">场景举例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-number">1.3.</span> <span class="toc-text">解决方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">1.4.</span> <span class="toc-text">参考资料</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2025/03/27/75-44%20%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/" title="75-44 分布式锁超时问题"><img src="/img/21.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="75-44 分布式锁超时问题"/></a><div class="content"><a class="title" href="/2025/03/27/75-44%20%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/" title="75-44 分布式锁超时问题">75-44 分布式锁超时问题</a><time datetime="2025-03-27T12:15:17.000Z" title="发表于 2025-03-27 20:15:17">2025-03-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/03/27/75-43%20%E8%B6%85%E5%8D%96%E9%97%AE%E9%A2%98/" title="75-43 超卖问题"><img src="/img/17.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="75-43 超卖问题"/></a><div class="content"><a class="title" href="/2025/03/27/75-43%20%E8%B6%85%E5%8D%96%E9%97%AE%E9%A2%98/" title="75-43 超卖问题">75-43 超卖问题</a><time datetime="2025-03-27T11:40:17.000Z" title="发表于 2025-03-27 19:40:17">2025-03-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/03/27/75-42%20RPC/" title="75-42 RPC"><img src="/img/20.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="75-42 RPC"/></a><div class="content"><a class="title" href="/2025/03/27/75-42%20RPC/" title="75-42 RPC">75-42 RPC</a><time datetime="2025-03-27T10:40:17.000Z" title="发表于 2025-03-27 18:40:17">2025-03-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/03/25/75-41%20%E6%8B%9C%E5%8D%A0%E5%BA%AD&amp;%E9%9D%9E%E6%8B%9C%E5%8D%A0%E5%BA%AD/" title="75-41 拜占庭&amp;非拜占庭"><img src="/img/27.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="75-41 拜占庭&amp;非拜占庭"/></a><div class="content"><a class="title" href="/2025/03/25/75-41%20%E6%8B%9C%E5%8D%A0%E5%BA%AD&amp;%E9%9D%9E%E6%8B%9C%E5%8D%A0%E5%BA%AD/" title="75-41 拜占庭&amp;非拜占庭">75-41 拜占庭&amp;非拜占庭</a><time datetime="2025-03-25T12:40:17.000Z" title="发表于 2025-03-25 20:40:17">2025-03-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/03/25/75-40%20Raft%E5%8D%8F%E8%AE%AE/" title="75-40 Raft协议"><img src="/img/15.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="75-40 Raft协议"/></a><div class="content"><a class="title" href="/2025/03/25/75-40%20Raft%E5%8D%8F%E8%AE%AE/" title="75-40 Raft协议">75-40 Raft协议</a><time datetime="2025-03-25T12:08:17.000Z" title="发表于 2025-03-25 20:08:17">2025-03-25</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/index_img.png);"><div id="footer-wrap"><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.3</a></div><div class="footer_custom_text">道阻且长</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = true;
+document.body.addEventListener('input', POWERMODE);
+</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
